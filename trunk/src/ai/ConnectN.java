@@ -3,9 +3,10 @@ import java.io.*;
 
 public class ConnectN 
 {
+	public static int width, height, numToWin, playerNumber, timeLimit, move;
     public static void main (String args[]) throws Exception 
     {
-        int width, height, numToWin, playerNumber, timeLimit, move;
+        
 
         // use BufferedReader for easy reading
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +22,7 @@ public class ConnectN
         numToWin = Integer.parseInt(gameConfig[2]);
         playerNumber = Integer.parseInt(gameConfig[3]);
         timeLimit = Integer.parseInt(gameConfig[4]);
+        board.State state=new board.State(width,height);
         
         boolean myMove = (playerNumber==0);
 
@@ -28,11 +30,12 @@ public class ConnectN
         {
             if (myMove) 
             {
-            	MiniMax minimax=new MiniMax();
+            	MiniMax minimax=new MiniMax(state);
             	minimax.start();
             	Thread.sleep((long)((float)timeLimit-0.5)*1000);
             	move=MiniMax.bestMove;
             	minimax.stop();
+            	board.State.addPiece(state, 1, move);
                 // send move
                 // System.out.println(String.valueOf(move));
                 System.out.flush();
@@ -41,7 +44,7 @@ public class ConnectN
             {
                 // read move
                 move = Integer.parseInt(input.readLine());
-
+                board.State.addPiece(state, 2, move);
                 // check for end
                 if (move < 0) break;
             }
