@@ -13,16 +13,21 @@ public class MiniMax extends Thread
 	}
 	public void run()
 	{
-		int max=-1, maxMove=-1, moveVal=-1;
+		int max=(state.width*state.height+1), maxMove=-1, moveVal=(state.width*state.height+1);
 		for (int i=1; i<1000; i++)
 		{
 			for (int j=0; j<state.width; j++)
 			{
-				moveVal=alphabeta(board.State.addPiece(state, 1, i),i,-(state.width*state.height+1),(state.width*state.height+1),1);
+				moveVal=alphabeta(board.State.addPiece(state, 1, j),i,-(state.width*state.height+1),(state.width*state.height+1),1);
+				if (i==1) System.out.print(moveVal+" ");
 				if (moveVal<max) maxMove=j;
 			}
 			bestMove=maxMove;
 		}
+	}
+	public int getBestMove()
+	{
+		return bestMove;
 	}
 	public int alphabeta(board.State gameState, int maxDepth, int alpha, int beta, int player)
 	{
