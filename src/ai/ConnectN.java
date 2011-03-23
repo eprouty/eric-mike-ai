@@ -34,7 +34,7 @@ public class ConnectN
             	minimax.start();
             	Thread.sleep((long)((float)timeLimit-0.5)*1000);
             	move=minimax.getBestMove();
-            	minimax.stop();
+            	//minimax.stop();
             	state=board.State.addPiece(state, 1, move);
                 // send move
                 System.out.println(String.valueOf(move));
