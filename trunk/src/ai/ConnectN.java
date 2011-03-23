@@ -34,8 +34,8 @@ public class ConnectN
             	minimax.start();
             	Thread.sleep((long)((float)timeLimit-0.5)*1000);
             	move=minimax.getBestMove();
-            	//minimax.stop();
-            	board.State.addPiece(state, 1, move);
+            	minimax.stop();
+            	state=board.State.addPiece(state, 1, move);
                 // send move
                 System.out.println(String.valueOf(move));
                 System.out.flush();
@@ -46,9 +46,10 @@ public class ConnectN
                 move = Integer.parseInt(input.readLine());
                 // check for end
                 if (move < 0) break;
-                board.State.addPiece(state, 2, move);
+                state=board.State.addPiece(state, 2, move);
             }
-
+            System.out.println();
+            board.State.printState(state);
             myMove=!myMove;
         }
     }

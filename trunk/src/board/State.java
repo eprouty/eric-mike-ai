@@ -21,37 +21,186 @@ public class State
 			}
 		}
 	}
-	
+	public static void printState(State state)
+	{
+		for (int y=state.height-1; y>=0; y--)
+		{
+			for (int x=0; x<state.width; x++)
+			{
+				System.out.print(state.board[x][y]==0 ? " " : (state.board[x][y]==1?"0":"@"));
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.flush();
+	}
 	public static State addPiece(State current, int player, int x){
-		for (int i = 0; i < current.height; i++){
-			if (current.board[x][i] == 0){
-				current.board[x][i] = player;
+		State state=new State(current.width, current.height, current.numToWin);
+		for (int i=0; i<state.width; i++)
+		{
+			for (int y=0; y<state.height; y++)
+			{
+				state.board[i][y]=current.board[i][y];
+			}
+		}
+		for (int i = 0; i < state.height; i++){
+			if (state.board[x][i] == 0){
+				state.board[x][i] = player;
 				break;
 			}
 		}
 		
-		return current;
+		return state;
 	}
 	
 	public int evaluate(){
-		int best = 1000000, cur=0;
+		int best = 1000000, cur=1000000, vertScore, horizScore, upRightScore, downRightScore;
 		
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
-				switch(board[x][y]){
-				case 1:
-					cur=movesHeuristic(x, y);
-					if (cur<=best) best=cur;
-					break;
-				default:
-					break;
-				}
+				vertScore=checkVert(x,y);
+				horizScore=checkRight(x,y);
+				upRightScore=checkUpRightDiag(x,y);
+				downRightScore=checkDownRightDiag(x,y);
+				best=Math.min(best, Math.min(vertScore, Math.min(horizScore, Math.min(upRightScore, downRightScore))));
 			}
 		}
 		
 		return best;
 	}
-	
+	private int checkVert(int x, int y)
+	{
+		int score=0;
+		for (int i=0; i<numToWin; i++)
+		{
+			if (y+i==height) return 1000000;
+			if (board[x][y+i]==0) score++;
+			if (board[x][y+i]==1) continue;
+			if (board[x][y+i]==2) return 1000000;
+		}
+		
+		return score;
+	}
+	private int checkRight(int x, int y)
+	{
+		int score=0;
+		for (int i=0; i<numToWin; i++)
+		{
+			if (x+i==width) return 1000000;
+			if (board[x+i][y]==0)
+			{
+				for (int j=y; j>=0; j--)
+				{
+					if (board[x+i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x+i][y]==1) continue;
+			if (board[x+i][y]==2) return 1000000;
+		}
+		
+		return score;
+	}
+	private int checkLeft(int x, int y)
+	{
+		int score=0;
+		for (int i=0; i<numToWin; i++)
+		{
+			if (x-i==-1) return 1000000;
+			if (board[x-i][y]==0)
+			{
+				for (int j=y; j>=0; j--)
+				{
+					if (board[x-i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x-i][y]==1) continue;
+			if (board[x-i][y]==2) return 1000000;
+		}
+		
+		return score;
+	}
+	private int checkUpRightDiag(int x, int y)
+	{
+		int score=0;
+		for (int i=0; i<numToWin; i++)
+		{
+			if (x+i==width) return 1000000;
+			if (y+i==height) return 1000000;
+			if (board[x+i][y+i]==0)
+			{
+				for (int j=y+i; j>=0; j--)
+				{
+					if (board[x+i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x+i][y+i]==1) continue;
+			if (board[x+i][y+i]==2) return 1000000;
+		}
+		return score;
+	}
+	private int checkDownRightDiag(int x, int y)
+	{
+		int score=0;
+		for (int i=0; i<numToWin; i++)
+		{
+			if (x+i==width) return 1000000;
+			if (y-i==-1) return 1000000;
+			if (board[x+i][y-i]==0)
+			{
+				for (int j=y-i; j>=0; j--)
+				{
+					if (board[x+i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x+i][y-i]==1) continue;
+			if (board[x+i][y-i]==2) return 1000000;
+		}
+		return score;
+	}
+	private int checkUpLeftDiag(int x, int y)
+	{
+		int score=0;
+		for (int i=1; i<numToWin; i++)
+		{
+			if (x-i==-1) return 1000000;
+			if (y+i==height) return 1000000;
+			if (board[x-i][y+i]==0)
+			{
+				for (int j=y+i; j>=0; j--)
+				{
+					if (board[x-i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x-i][y+i]==1) continue;
+			if (board[x-i][y+i]==2) return 1000000;
+		}
+		return score;
+	}
+	private int checkDownLeftDiag(int x, int y)
+	{
+		int score=0;
+		for (int i=1; i<numToWin; i++)
+		{
+			if (x-i==-1) return 1000000;
+			if (y-i==-1) return 1000000;
+			if (board[x-i][y-i]==0)
+			{
+				for (int j=y-i; j>=0; j--)
+				{
+					if (board[x-i][j]==0) score++;
+					else break;
+				}
+			}
+			if (board[x-i][y-i]==1) continue;
+			if (board[x-i][y-i]==2) return 1000000;
+		}
+		return score;
+	}
 	private int movesHeuristic(int x, int y){
 		int best = 1000000, current=0;
 		int sentinel=numToWin;

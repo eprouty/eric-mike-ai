@@ -18,6 +18,7 @@ public class MiniMax extends Thread
 		{
 			for (int j=0; j<state.width; j++)
 			{
+				if (state.board[j][state.height-1]!=0) continue;
 				moveVal=alphabeta(board.State.addPiece(state, 1, j),i,-(state.width*state.height+1),(state.width*state.height+1),1);
 				if (i==1) System.out.print(moveVal+" ");
 				if (moveVal<max) maxMove=j;
