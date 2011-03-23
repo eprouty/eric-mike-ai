@@ -19,9 +19,13 @@ public class MiniMax extends Thread
 			for (int j=0; j<state.width; j++)
 			{
 				if (state.board[j][state.height-1]!=0) continue;
-				moveVal=alphabeta(board.State.addPiece(state, 1, j),i,-(state.width*state.height+1),(state.width*state.height+1),1);
+				moveVal=alphabeta(board.State.addPiece(state, 1, j),i,-1000000,1000000,1);
 				if (i==1) System.out.print(moveVal+" ");
-				if (moveVal<max) maxMove=j;
+				if (moveVal<max)
+				{
+					maxMove=j;
+					max=moveVal;
+				}
 			}
 			bestMove=maxMove;
 		}
@@ -51,7 +55,7 @@ public class MiniMax extends Thread
 		{
 			for (int i=0; i<gameState.width; i++)
 			{
-				beta=Math.max(beta, alphabeta(board.State.addPiece(gameState, player, i), maxDepth-1, alpha, beta, 2));
+				beta=Math.min(beta, alphabeta(board.State.addPiece(gameState, player, i), maxDepth-1, alpha, beta, 1));
 				if (beta<=alpha) break;
 			}
 			return beta;
