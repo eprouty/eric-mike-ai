@@ -1,5 +1,4 @@
 package board;
-import ai.ConnectN;
 
 public class State
 {
@@ -53,35 +52,36 @@ public class State
 		return state;
 	}
 	
-	public int evaluate(){
+	public int evaluate(int player){
 		int best = 1000000, vertScore, horizScore, upRightScore, downRightScore;
 		
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
-				vertScore=checkVert(x,y);
-				horizScore=checkRight(x,y);
-				upRightScore=checkUpRightDiag(x,y);
-				downRightScore=checkDownRightDiag(x,y);
+				vertScore=checkVert(x,y,player);
+				horizScore=checkRight(x,y,player);
+				upRightScore=checkUpRightDiag(x,y,player);
+				downRightScore=checkDownRightDiag(x,y,player);
 				best=Math.min(best, Math.min(vertScore, Math.min(horizScore, Math.min(upRightScore, downRightScore))));
 			}
 		}
 		
 		return best;
 	}
-	private int checkVert(int x, int y)
+	private int checkVert(int x, int y, int player)
 	{
+		
 		int score=0;
 		for (int i=0; i<numToWin; i++)
 		{
 			if (y+i==height) return 1000000;
 			if (board[x][y+i]==0) score++;
-			if (board[x][y+i]==1) continue;
-			if (board[x][y+i]==2) return 1000000;
+			else if (board[x][y+i]==player) continue;
+			else return 1000000;
 		}
 		
 		return score;
 	}
-	private int checkRight(int x, int y)
+	private int checkRight(int x, int y, int player)
 	{
 		int score=0;
 		for (int i=0; i<numToWin; i++)
@@ -91,13 +91,13 @@ public class State
 			{
 				score+=1+y-getColumnHeight(x+i);
 			}
-			if (board[x+i][y]==1) continue;
-			if (board[x+i][y]==2) return 1000000;
+			else if (board[x+i][y]==player) continue;
+			else return 1000000;
 		}
 		
 		return score;
 	}
-	private int checkUpRightDiag(int x, int y)
+	private int checkUpRightDiag(int x, int y, int player)
 	{
 		int score=0;
 		for (int i=0; i<numToWin; i++)
@@ -108,12 +108,12 @@ public class State
 			{
 				score+=1+i+y-getColumnHeight(x+i);
 			}
-			if (board[x+i][y+i]==1) continue;
-			if (board[x+i][y+i]==2) return 1000000;
+			else if (board[x+i][y+i]==player) continue;
+			else return 1000000;
 		}
 		return score;
 	}
-	private int checkDownRightDiag(int x, int y)
+	private int checkDownRightDiag(int x, int y, int player)
 	{
 		int score=0;
 		for (int i=0; i<numToWin; i++)
@@ -125,8 +125,8 @@ public class State
 				
 				score+=1+i+y-getColumnHeight(x+i);
 			}
-			if (board[x+i][y-i]==1) continue;
-			if (board[x+i][y-i]==2) return 1000000;
+			else if (board[x+i][y-i]==player) continue;
+			else return 1000000;
 		}
 		return score;
 	}
@@ -141,159 +141,4 @@ public class State
 		}
 		return height;
 	}
-
-	private int movesHeuristic(int x, int y){
-		int best = 1000000, current=0;
-		int sentinel=numToWin;
-		for (int i=1; i<numToWin; i++)
-		{
-			if (x+i==width)
-			{
-				current=1000000;
-				break;
-			}
-			for (int j=0; j<height;j++)
-			{
-				if (y-j==-1) break;
-				if (board[x+i][y-j]==0) current++;
-				else j=height;
-			}
-		}
-		if (current<best) best=current;
-		current=0;
-		for (int i=1; i<numToWin; i++)
-		{
-			if (y+i==height)
-			{
-				current=1000000;
-				break;
-			}
-			if (x+i==width)
-			{
-				current=1000000;
-				break;
-			}
-			if (board[x][y+i]!=0)
-			{
-				current=1000000;
-				break;
-			}
-			for (int j=0; j<height;j++)
-			{
-				if (y+j==height)
-				{
-					current=1000000;
-					break;
-				}
-				if (board[x+i][y+j]==0) current++;
-				else j=height;
-			}
-		}
-		if (current<best) best=current;
-		current=0;
-		for (int i=1; i<numToWin; i++)
-		{
-			if (y+i==height)
-			{
-				current=1000000;
-				break;
-			}
-			if (x+i==width)
-			{
-				current=1000000;
-				break;
-			}
-			if (board[x+i][y+i]!=0)
-			{
-				current=1000000;
-				break;
-			}
-			for (int j=0; j<height;j++)
-			{
-				if (y+i-j==-1)
-				{
-					break;
-				}
-				if (board[x+i][y+i-j]==0) current++;
-				else j=height;
-			}
-		}
-		if (current<best) best=current;
-		current=0;
-		for (int i=1; i<numToWin; i++)
-		{
-			if (y-i==-1)
-			{
-				current=1000000;
-				break;
-			}
-			if (x+i==width)
-			{
-				current=1000000;
-				break;
-			}
-			if (board[x+i][y-i]!=0)
-			{
-				current=1000000;
-				break;
-			}
-			for (int j=0; j<height;j++)
-			{
-				if (y-i-j==-1) break;
-				if (board[x+i][y-i-j]==0) current++;
-				else j=height;
-			}
-		}
-		if (current<best) best=current;
-		return best;
-	}
-	
-	private int checkDirection(int dir, int x, int y){
-		int movesNeeded = ConnectN.numToWin - 1;
-		
-		switch (dir){
-		case 0:
-			for (int i = 1; i < movesNeeded; i++){
-				if (y+i==height) break;
-				if (board[x][y+i] == 1){
-					movesNeeded--;
-				} else {
-					break;
-				}
-			}
-			break;
-		case 1:
-			for (int i = 1; i < movesNeeded; i++){
-				if ((y+i==height || x+i==width)) break;
-				if (board[x+i][y+i] == 1){
-					movesNeeded--;
-				} else {
-					break;
-				}
-			}
-			break;
-		case 2:
-			for (int i = 1; i < movesNeeded; i++){
-				if ((y==height || x+i==width)) break;
-				if (board[x+i][y] == 1){
-					movesNeeded--;
-				} else {
-					break;
-				}
-			}
-			break;
-		case 3:
-			for (int i = 1; i < movesNeeded; i++){
-				if ((y-i==-1 || x+i==width)) break;
-				if (board[x+i][y-i] == 1){
-					movesNeeded--;
-				} else {
-					break;
-				}
-			}
-			break;
-		}
-		return movesNeeded;
-	}
 }
-

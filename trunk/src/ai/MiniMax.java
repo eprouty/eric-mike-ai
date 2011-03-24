@@ -1,22 +1,23 @@
 package ai;
 
-import board.State;
 import java.lang.Math;
 
 public class MiniMax extends Thread
 {
 	private board.State state;
-	public static int bestMove;
+	public int bestMove;
+	public boolean runSearch;
 	public MiniMax(board.State currentState)
 	{
 		state=currentState;
+		runSearch=true;
 	}
 	public void run()
 	{
-		int max=(state.width*state.height+1), maxMove=-1, moveVal=(state.width*state.height+1);
-		for (int i=1; i<1000; i++)
+		int max=1000000, maxMove=-1, moveVal=1000000;
+		for (int i=1; runSearch; i++)
 		{
-			for (int j=0; j<state.width; j++)
+			for (int j=0; j<state.width && runSearch; j++)
 			{
 				if (state.board[j][state.height-1]!=0) continue;
 				moveVal=alphabeta(board.State.addPiece(state, 1, j),i,-1000000,1000000,1);
@@ -36,7 +37,8 @@ public class MiniMax extends Thread
 	}
 	public int alphabeta(board.State gameState, int maxDepth, int alpha, int beta, int player)
 	{
-		int val=gameState.evaluate();
+		if (!runSearch) return 0;
+		int val=gameState.evaluate(player);
 		if (maxDepth==0 || val==0)
 		{
 			return val;
@@ -49,7 +51,6 @@ public class MiniMax extends Thread
 				if (beta<=alpha) break;
 			}
 			return alpha;
-			//minimize
 		}
 		if (player==2)
 		{
@@ -59,10 +60,7 @@ public class MiniMax extends Thread
 				if (beta<=alpha) break;
 			}
 			return beta;
-			//maximize
 		}
 		return 1;
 	}
 }
-/*
-*/

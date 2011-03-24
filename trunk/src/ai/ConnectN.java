@@ -6,8 +6,6 @@ public class ConnectN
 	public static int width, height, numToWin, playerNumber, timeLimit, move;
     public static void main (String args[]) throws Exception 
     {
-        
-
         // use BufferedReader for easy reading
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
@@ -32,9 +30,9 @@ public class ConnectN
             {
             	MiniMax minimax=new MiniMax(state);
             	minimax.start();
-            	Thread.sleep((long)((float)timeLimit-0.5)*1000);
+            	Thread.sleep((long)((float)timeLimit-0.25)*1000);
             	move=minimax.getBestMove();
-            	//minimax.stop();
+            	minimax.runSearch=false;
             	state=board.State.addPiece(state, 1, move);
                 // send move
                 System.out.println(String.valueOf(move));
