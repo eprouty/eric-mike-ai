@@ -30,18 +30,21 @@ public class ConnectN
             {
             	MiniMax minimax=new MiniMax(state);
             	minimax.start();
-            	Thread.sleep((long)((float)timeLimit-0.25)*1000);
+            	Thread.sleep((long)((float)timeLimit - 1)*1000);
             	move=minimax.getBestMove();
             	minimax.runSearch=false;
             	state=board.State.addPiece(state, 1, move);
                 // send move
-                System.out.println(String.valueOf(move));
+            	System.out.flush();
+                System.out.print(String.valueOf(move));
                 System.out.flush();
             } 
             else 
             {
                 // read move
-                move = Integer.parseInt(input.readLine());
+            	String in = input.readLine();
+            	if (in.charAt(0) == '-') System.exit(0);
+                move = Integer.parseInt(in);
                 // check for end
                 if (move < 0) break;
                 state=board.State.addPiece(state, 2, move);
