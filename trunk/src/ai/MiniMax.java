@@ -10,6 +10,14 @@ public class MiniMax extends Thread
 	public MiniMax(board.State currentState)
 	{
 		state=currentState;
+		for (int i=0; i<state.width; i++)
+		{
+			if (state.board[i][state.height-1]==0)
+			{
+				bestMove=i;
+				break;
+			}
+		}
 		runSearch=true;
 	}
 	public void run()
