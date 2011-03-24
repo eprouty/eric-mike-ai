@@ -46,8 +46,8 @@ public class ConnectN
                 if (move < 0) break;
                 state=board.State.addPiece(state, 2, move);
             }
-            System.out.println();
-            board.State.printState(state);
+            //System.out.println();
+            //board.State.printState(state);
             myMove=!myMove;
         }
     }
