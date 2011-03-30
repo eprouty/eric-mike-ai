@@ -7,7 +7,7 @@ public class AC3 {
 	public AC3(){
 	}
 	
-	public void reduceArc(Item item1, Item item2, ConstraintMatrix cm){
+	public static void reduceArc(Item item1, Item item2, ConstraintMatrix cm){
 		char[] valid = item1.getValidBags();
 		String validDomain = "";
 		for (char c : valid){
