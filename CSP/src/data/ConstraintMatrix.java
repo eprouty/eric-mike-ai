@@ -72,11 +72,11 @@ public class ConstraintMatrix{
 		}
 	}
 	
-	public boolean checkValidity(char ipa, int itemNum){
+	public boolean checkValidity(char possibleBag, int itemNum){
 		boolean valid = false;
 		if (itemNum == 1){
 			for (int i=1; i < matrix.length; i++){
-				if (matrix[i][0] == ipa){
+				if (matrix[i][0] == possibleBag){
 					for (int j=1; j < matrix.length; j++){
 						if (matrix[i][j] == 't'){
 							valid = true;
@@ -86,7 +86,7 @@ public class ConstraintMatrix{
 			}
 		} else {
 			for (int j=1; j < matrix.length; j++){
-				if (matrix[0][j] == ipa){
+				if (matrix[0][j] == possibleBag){
 					for (int i=1; i < matrix.length; i++){
 						if (matrix[i][j] == 't'){
 							valid = true;
