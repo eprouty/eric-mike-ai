@@ -3,6 +3,8 @@ package data;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import search.AC3;
+
 public class CNet {
 	int lowerLim, upperLim;
 	//nodes
@@ -120,6 +122,7 @@ public class CNet {
 	//it goes through the constraint matrix and propogates the valid bags as defined by the unary inclusive and exclusive constraints
 	public void finalizeConstraints(){
 		Iterator<ConstraintMatrix> icm = arcs.iterator();
+		Item i1 = null,i2 = null;
 		while (icm.hasNext()){
 			ConstraintMatrix cm = icm.next();
 			char[] item1ValidBags = null, item2ValidBags = null;
@@ -128,13 +131,16 @@ public class CNet {
 				Item i = ii.next();
 				if (i.name == cm.item1){
 					item1ValidBags = i.getValidBags();
+					i1 = i;
 				} else if (i.name == cm.item2){
 					item2ValidBags = i.getValidBags();
+					i2 = i;
 				} else if (item1ValidBags != null && item2ValidBags != null){
 					break;
 				}
 			}
 			cm.finalizeConstraints(item1ValidBags, item2ValidBags);
+			AC3.reduceArc(i1, i2, cm);
 		}
 	}
 	
