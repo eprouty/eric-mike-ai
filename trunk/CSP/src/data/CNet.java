@@ -5,26 +5,33 @@ import java.util.Iterator;
 
 public class CNet {
 	int lowerLim, upperLim;
+	//nodes
 	ArrayList<Item> items = new ArrayList<Item>();
+	//domain
 	ArrayList<Bag> bags = new ArrayList<Bag>();
+	//arcs
 	ArrayList<ConstraintMatrix> arcs = new ArrayList<ConstraintMatrix>();
 	
 	public CNet(){
 	}
 	
+	//sets information about how many items must be in a bag
 	public void setLimits(int lowerLim, int upperLim){
 		this.lowerLim = lowerLim;
 		this.upperLim = upperLim;
 	}
 	
+	//adds an item to the CNET
 	public void addItem(char name, int weight){
 		items.add(new Item(name, weight));
 	}
 	
+	//adds a bag to the CNET
 	public void addBag(char name, int size){
 		bags.add(new Bag(name, size));
 	}
 	
+	//this adds information about a unary inclusive constraint to an item
 	public void addUnaryInclusive(char item, char[] bags){
 		for (int i=0; i < items.size(); i++){
 			if (items.get(i).name == item){
@@ -34,6 +41,7 @@ public class CNet {
 		}
 	}
 	
+	//this add information about a unary exclusive constraint to an item
 	public void addUnaryExclusive(char item, char[] bags){
 		for (int i=0; i < items.size(); i++){
 			if (items.get(i).name == item){
@@ -47,6 +55,7 @@ public class CNet {
 		}
 	}
 	
+	//modifies or creates a ConstraintMatrix (arc in terms of a constraint net) to represent the binary equality constraint of two items
 	public void addBinaryEquals(char item1, char item2){
 		for (int i=0; i < arcs.size(); i++){
 			if (arcs.get(i).item1 == item1 && arcs.get(i).item2 == item2){
@@ -66,6 +75,7 @@ public class CNet {
 		arcs.add(cm);
 	}
 	
+	//modifies or creates a ConstraintMatrix (arc in terms of a constraint net) to represent the binary inequality constraint of two items
 	public void addBinaryNotEquals(char item1, char item2){
 		for (int i=0; i < arcs.size(); i++){
 			if (arcs.get(i).item1 == item1 && arcs.get(i).item2 == item2){
@@ -85,6 +95,8 @@ public class CNet {
 		arcs.add(cm);
 	}
 	
+	//modifies or creates a ConstraintMatrix (arc in terms of a constraint net) to represent the fact that two items are mutually exclusive
+	//to their respective bags
 	public void addMutualExclusive(char item1, char item2, char bag1, char bag2){
 		for (int i=0; i < arcs.size(); i++){
 			if (arcs.get(i).item1 == item1 && arcs.get(i).item2 == item2){
@@ -104,6 +116,8 @@ public class CNet {
 		arcs.add(cm);
 	}
 	
+	//this function should be called after all the constraints have been read in from a file
+	//it goes through the constraint matrix and propogates the valid bags as defined by the unary inclusive and exclusive constraints
 	public void finalizeConstraints(){
 		Iterator<ConstraintMatrix> icm = arcs.iterator();
 		while (icm.hasNext()){
