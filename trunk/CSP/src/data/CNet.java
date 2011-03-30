@@ -7,7 +7,7 @@ public class CNet {
 	int lowerLim, upperLim;
 	//nodes
 	ArrayList<Item> items = new ArrayList<Item>();
-	//domain
+	static //domain
 	ArrayList<Bag> bags = new ArrayList<Bag>();
 	//arcs
 	ArrayList<ConstraintMatrix> arcs = new ArrayList<ConstraintMatrix>();
@@ -138,120 +138,13 @@ public class CNet {
 		}
 	}
 	
-	public String getBagString(){
+	public static String getBagString(){
 		String bString = "";
-		Iterator<Bag> ib = this.bags.iterator();
+		Iterator<Bag> ib = bags.iterator();
 		while (ib.hasNext()){
 			Bag b = ib.next();
 			bString += b.name;
 		}
 		return bString;
-	}
-	
-	private class Item{
-		char name;
-		int weight;
-		char[] validBags;
-		
-		public Item(char name, int weight){
-			this.name = name;
-			this.weight = weight;
-			validBags = null;
-		}
-		
-		public void setValidBags(char[] validBags){
-			this.validBags = validBags;
-		}
-		
-		public char[] getValidBags(){
-			if (validBags == null){
-				return getBagString().toCharArray();
-			} else {
-				return validBags;
-			}
-		}
-	}
-	
-	private class Bag{
-		char name;
-		int size;
-		
-		public Bag(char name, int size){
-			this.name = name;
-			this.size = size;
-		}
-	}
-	
-	//matrix considers 0,0 to be the top left
-	//item1 goes down the left side of the matrix
-	//item2 runs along the top of the matrix
-	private class ConstraintMatrix{
-		char item1;
-		char item2;
-		char[][] matrix = new char[bags.size()+1][bags.size()+1];
-		
-		public ConstraintMatrix(char item1, char item2){
-			this.item1 = item1;
-			this.item2 = item2;
-			matrix[0][0] = '0';
-			for (int i=1; i < matrix.length; i++){
-				matrix[i][0] = bags.get(i-1).name;
-				matrix[0][i] = bags.get(i-1).name;
-				for (int j = 1; j < matrix.length; j++){
-					matrix[i][j] = 't';
-				}
-			}
-		}
-		
-		public void setBinaryEquality(){
-			for (int i = 1; i < matrix.length; i++){
-				for (int j = 1; j < matrix.length; j++){
-					if (i == j){
-						continue;
-					} else {
-						matrix[i][j] = 'f';
-					}
-				}
-			}
-		}
-		
-		public void setBinaryInequality(){
-			for (int i=1; i < matrix.length; i++){
-				for (int j = 1; j < matrix.length; j++){
-					if (i != j){
-						continue;
-					} else {
-						matrix[i][j] = 'f';
-					}
-				}
-			}
-		}
-		
-		public void setMutualExclusive(char bag1, char bag2){
-			for (int i=1; i < matrix.length; i++){
-				for (int j = 1; j < matrix.length; j++){
-					if (matrix[i][0] == bag1){
-						if (matrix[0][j] == bag2){
-							matrix[i][j] = 'f';
-						}
-					}
-				}
-			}
-		}
-		
-		public void finalizeConstraints(char[] item1ValidBags, char[] item2ValidBags){
-			String v1 = String.valueOf(item1ValidBags);
-			String v2 = String.valueOf(item2ValidBags);
-			for (int i=1; i < matrix.length; i++){
-				for (int j = 1; j < matrix.length; j++){
-					if (v1.indexOf(matrix[i][0]) == -1){
-						matrix[i][j] = 'f';
-					}
-					if (v2.indexOf(matrix[0][j]) == -1){
-						matrix[i][j] = 'f';
-					}
-				}
-			}
-		}
 	}
 }
