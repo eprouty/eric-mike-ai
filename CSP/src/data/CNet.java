@@ -171,28 +171,28 @@ public class CNet {
 		boolean valid = true;
 		if (item.checkValidBag(bag)){
 			if (bag.getRemainingSize() - item.weight >= 0){
-				Iterator<Item> ii = assignments.keySet().iterator();
-				while (ii.hasNext()){
-					if (!valid){
-						return false;
-					}
-					Item i = ii.next();
-					Bag b = assignments.get(i);
-					for (ConstraintMatrix cm : arcs){
+				if (bag.getNumberOfItems() + 1 <= upperLim){
+					Iterator<Item> ii = assignments.keySet().iterator();
+					while (ii.hasNext()){
 						if (!valid){
 							return false;
-						}else if (cm.item1 == item.name && cm.item2 == i.name){
-							valid = cm.checkConsistency(bag.name, b.name);
-						} else if (cm.item1 == i.name && cm.item2 == item.name){
-							valid = cm.checkConsistency(b.name, bag.name);
+						}
+						Item i = ii.next();
+						Bag b = assignments.get(i);
+						for (ConstraintMatrix cm : arcs){
+							if (!valid){
+								return false;
+							}else if (cm.item1 == item.name && cm.item2 == i.name){
+								valid = cm.checkConsistency(bag.name, b.name);
+							} else if (cm.item1 == i.name && cm.item2 == item.name){
+								valid = cm.checkConsistency(b.name, bag.name);
+							}
 						}
 					}
+					return true;
 				}
 			}
-		} else {
-			return false;
 		}
-		
-		return true;
+		return false;
 	}
 }

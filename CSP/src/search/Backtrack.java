@@ -11,24 +11,24 @@ public class Backtrack
 	public static boolean backtracking(ArrayList<Bag> bags, ArrayList<Item> items, HashMap<Item,Bag> assignment, CNet net)
 	{
 		if (items.size()==0) return true;
-		for (int i=0; i<bags.size(); i++)
+		for (int i=0; i<items.size(); i++)
 		{
-			for (int j=0; j<items.size(); j++)
+			for (int j=0; j<bags.size(); j++)
 			{
-				if (consistent(bags.get(i), items.get(j), assignment, net) && bags.get(i).addItem(items.get(j)))
+				if (consistent(bags.get(j), items.get(i), assignment, net) && bags.get(j).addItem(items.get(i)))
 				{
-					assignment.put(items.get(j), bags.get(i));
+					assignment.put(items.get(i), bags.get(j));
 					ArrayList<Item> itemsCopy = deepCopy(items);
 					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
-					itemsCopy.remove(j);
+					itemsCopy.remove(i);
 					if (backtracking(bagsCopy,itemsCopy,assignment,net))
 					{
 						return true;
 					}
 				}
-				assignment.remove(items.get(j));
+				assignment.remove(items.get(i));
 			}
-			bags.remove(i);
+			items.remove(i);
 			i--;
 		}
 		return false;
@@ -50,14 +50,13 @@ public class Backtrack
 		for(Bag bag:list)
 		{
 			Bag copyItem=new Bag(bag.name, bag.size);
-			copyItem.setRemainingSize(bag.size);
+			copyItem.setItems(bag.items);
 			copy.add(copyItem);
 		}
 		return copy;
 	}
 	public static boolean consistent(Bag bag, Item item, HashMap<Item, Bag> assignments, CNet net)
 	{
-		//TODO: Implement this method, which checks if a 'value is consistent with an assignment'
 		return net.checkConsistency(item, bag, assignments);
 	}
 }
