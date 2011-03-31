@@ -5,6 +5,9 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+
+import search.Backtrack;
 
 public class Main {
 	//this is the entry point for the system, take in the file that will be used for the problem
@@ -27,6 +30,9 @@ public class Main {
 		char[] bags;
 		while ((line = br.readLine()) != null){
 			if (line.contains("#")){
+				if (section == 2){
+					cnet.initializeValidBags();
+				}
 				section++;
 				continue;
 			} else {
@@ -87,5 +93,12 @@ public class Main {
 			}
 		}
 		cnet.finalizeConstraints();
+		
+		HashMap<Item, Bag> assignments = new HashMap<Item, Bag>();
+		if (Backtrack.backtracking(cnet.getBags(), cnet.items, assignments, cnet)){
+			System.out.println("Hooray we found a solution");
+		} else {
+			System.err.println("Boooo! no solution");
+		}
 	}
 }
