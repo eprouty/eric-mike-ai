@@ -30,9 +30,17 @@ public class Bag{
 		size = rsize;
 	}
 	
+	public void setItems(ArrayList<Item> items){
+		this.items = items;
+	}
+	
 	public Item[] getItemsInBag(){
 		Item[] i = new Item[items.size()];
 		i = items.toArray(i);
 		return i;
+	}
+	
+	public int getNumberOfItems(){
+		return items.size();
 	}
 }

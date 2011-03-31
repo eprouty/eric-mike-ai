@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import search.Backtrack;
 
@@ -99,7 +100,7 @@ public class Main {
 			System.out.println("Hooray we found a solution");
 			for (Item item:assignments.keySet())
 			{
-				System.out.println("Item "+item.name+" goes in bag "+assignments.get(item).name);
+				System.out.println(item.name+" "+assignments.get(item).name);
 			}
 		} else {
 			System.err.println("Boooo! no solution");
