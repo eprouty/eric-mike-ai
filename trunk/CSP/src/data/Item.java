@@ -22,4 +22,13 @@ public class Item{
 			return validBags;
 		}
 	}
+	
+	public boolean checkValidBag(Bag b){
+		for (char c : validBags){
+			if (c == b.name){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -18,9 +18,11 @@ public class Backtrack
 				if (consistent(bags.get(bags.size()-1), items.get(j), assignment, net))
 				{
 					assignment.put(items.get(j), bags.get(bags.size()-1));
-					ArrayList<Item> itemsCopy=deepCopy(items);
+					bags.get(bags.size() - 1).addItem(items.get(j));
+					ArrayList<Item> itemsCopy = deepCopy(items);
+					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
 					itemsCopy.remove(j);
-					if (backtracking(bags,itemsCopy,assignment,net))
+					if (backtracking(bagsCopy,itemsCopy,assignment,net))
 					{
 						return true;
 					}
@@ -41,9 +43,19 @@ public class Backtrack
 		}
 		return copy;
 	}
-	public static boolean consistent(Bag bag, Item item, HashMap<Item,Bag> assignment, CNet net)
+	public static ArrayList<Bag> deepCopyBag(ArrayList<Bag> list)
+	{
+		ArrayList<Bag> copy=new ArrayList<Bag>();
+		for(Bag bag:list)
+		{
+			Bag copyItem=new Bag(bag.name, bag.size);
+			copy.add(copyItem);
+		}
+		return copy;
+	}
+	public static boolean consistent(Bag bag, Item item, HashMap<Item, Bag> assignments, CNet net)
 	{
 		//TODO: Implement this method, which checks if a 'value is consistent with an assignment'
-		return true;
+		return net.checkConsistency(item, bag, assignments);
 	}
 }
