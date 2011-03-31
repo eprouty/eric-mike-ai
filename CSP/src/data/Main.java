@@ -12,10 +12,11 @@ import search.Backtrack;
 public class Main {
 	//this is the entry point for the system, take in the file that will be used for the problem
 	public static void main (String [] args) throws IOException{
+		
 		if (args.length == 0){
 			System.err.println("Please give a text file containing contrainsts for the problem");
 			System.exit(-1);
-		} 
+		} //*/
 		FileInputStream fstream = new FileInputStream(args[0]);
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));

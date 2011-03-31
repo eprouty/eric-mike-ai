@@ -21,7 +21,21 @@ public class ConstraintMatrix{
 			}
 		}
 	}
-	
+	public int countIntersectingBags(Bag bag)
+	{
+		int intersections=0;
+		for (int i=1; i<matrix.length; i++)
+		{
+			if (matrix[i][0]==bag.name)
+			{
+				for (int j=1; j<matrix[i].length; j++)
+				{
+					if (matrix[i][j]=='f') intersections++;
+				}
+			}
+		}
+		return intersections;
+	}
 	public char getItem(int num){
 		if (num == 1){
 			return item1;

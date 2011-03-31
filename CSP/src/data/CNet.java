@@ -219,4 +219,14 @@ public class CNet {
 		}
 		return false;
 	}
+	
+	public int countIntersections(Bag bag)
+	{
+		int intersections=0;
+		for (ConstraintMatrix cm:arcs)
+		{
+			intersections+=cm.countIntersectingBags(bag);
+		}
+		return intersections;
+	}
 }
