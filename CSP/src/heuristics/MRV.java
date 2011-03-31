@@ -10,6 +10,7 @@ public class MRV {
 	public static Item getNextItem(CNet cnet, ArrayList<Item> itemList){
 		int minimum = 10000000, temp;
 		Item min = null;
+		//check the constraint matrixes... whichever has the fewest true values in it has MRV
 		for (ConstraintMatrix cm : cnet.getArcs()){
 			if ((temp = cm.getMinimum()) < minimum){
 				if (itemList.contains(cnet.getItem(cm.getItem(1)))){
@@ -21,6 +22,7 @@ public class MRV {
 				}
 			}
 		}
+		//Not all items are bounded within constraint matrixes, this will pull out any other items that have not been found yet in the proper MRV order
 		if (min == null){
 			for (Item i : itemList){
 				if (i.getValidBags().length < minimum){
