@@ -22,6 +22,19 @@ public class CNet {
 		return bags;
 	}
 	
+	public ArrayList<ConstraintMatrix> getArcs(){
+		return arcs;
+	}
+	
+	public Item getItem(char name){
+		for (Item i : items){
+			if (i.name == name){
+				return i;
+			}
+		}
+		return null;
+	}
+	
 	//sets information about how many items must be in a bag
 	public void setLimits(int lowerLim, int upperLim){
 		this.lowerLim = lowerLim;
@@ -165,6 +178,15 @@ public class CNet {
 		for (Item i : items){
 			i.setValidBags(bags);
 		}
+	}
+	
+	public boolean lowerLimMet(){
+		for (Bag b : bags){
+			if (b.getNumberOfItems() < lowerLim){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean checkConsistency(Item item, Bag bag, HashMap<Item, Bag> assignments){

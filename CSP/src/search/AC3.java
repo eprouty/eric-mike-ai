@@ -8,6 +8,8 @@ public class AC3 {
 	}
 	
 	public static void reduceArc(Item item1, Item item2, ConstraintMatrix cm){
+		//reduces the domain of each individual item based on the given constraints
+		//this goes through the given constraint that matches the two items and determines which domains are not valid
 		char[] valid = item1.getValidBags();
 		String validDomain = "";
 		for (char c : valid){
