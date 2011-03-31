@@ -32,8 +32,10 @@ public class Backtrack
 		}
 		for (int i=0; i<items.size(); i++)
 		{
+			sortByLCV(bags,net);
 			for (int j=0; j<bags.size(); j++)
 			{
+				
 				boolean consistency=consistent(bags.get(j), items.get(i), assignment, net);
 				//boolean weightCheck=bags.get(j).addItem(items.get(i));
 				if (consistency)
@@ -60,6 +62,35 @@ public class Backtrack
 			return false;
 		}
 		return false;
+	}
+	public static void sortByLCV(ArrayList<Bag> bags, CNet cnet)
+	{
+		int minValue=1000, minPos=-1, value;
+		for (int i=0; i<bags.size(); i++)
+		{
+			minValue=1000; minPos=-1;
+			for (int j=i; j<bags.size()-1; j++)
+			{
+				value=cnet.countIntersections(bags.get(j));
+				if (value<minValue)
+				{
+					minPos=j;
+					minValue=value;
+				}
+			}
+			if (minPos!=-1)
+			{
+				swap(bags,minPos,i);
+			}
+		}
+	}
+	public static void swap(ArrayList<Bag> bags, int pos1, int pos2)
+	{
+		Bag swapBag=bags.get(pos1);
+		bags.remove(pos1);
+		bags.add(pos1,bags.get(pos2));
+		bags.remove(pos2);
+		bags.add(pos2,swapBag);
 	}
 	public static ArrayList<Item> deepCopy(ArrayList<Item> list)
 	{
