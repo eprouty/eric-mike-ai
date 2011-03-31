@@ -1,8 +1,8 @@
 package data;
 
 public class Bag{
-	char name;
-	int size;
+	public char name;
+	public int size;
 	
 	public Bag(char name, int size){
 		this.name = name;
