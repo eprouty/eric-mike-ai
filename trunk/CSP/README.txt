@@ -18,3 +18,5 @@ BT + LCV + MRV + AC3: 	1360 steps
 
 
 Comparing the runtimes of just backtracking search using next in line dumb choosing of the variable to be assigned produces a significantly slower solution than with the introduction of the MRV and LCV heuristics.  For our implementation the change in runtime was almost a 60% increase.  On constraint04.dat it improved from ~3600 steps to only ~1400.
+
+Please see the contained traceBT, traceBTLCV, traceBTLCVMRV, and traceBTLCVMRVAC3 files for traces of the program running.
