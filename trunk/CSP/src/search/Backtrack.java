@@ -10,13 +10,35 @@ public class Backtrack
 {
 	public static boolean backtracking(ArrayList<Bag> bags, ArrayList<Item> items, HashMap<Item,Bag> assignment, CNet net)
 	{
-		if (items.size()==0) return true;
+		if (items.size()==0)
+		{
+			int itemCount=0;
+			float weight=0;
+			for (int i=0; i<bags.size(); i++)
+			{
+				itemCount=bags.get(i).items.size();
+				if (itemCount<net.lowerLim || itemCount>net.upperLim)
+				{
+					return false;
+				}
+				weight=0;
+				for (int j=0; j<bags.get(i).items.size(); j++)
+				{
+					weight+=bags.get(i).items.get(j).weight;
+				}
+				if (weight/(weight+bags.get(i).size)<0.9) return false;
+			}
+			return true;
+		}
 		for (int i=0; i<items.size(); i++)
 		{
 			for (int j=0; j<bags.size(); j++)
 			{
-				if (consistent(bags.get(j), items.get(i), assignment, net) && bags.get(j).addItem(items.get(i)))
+				boolean consistency=consistent(bags.get(j), items.get(i), assignment, net);
+				//boolean weightCheck=bags.get(j).addItem(items.get(i));
+				if (consistency)
 				{
+					bags.get(j).addItem(items.get(i));
 					assignment.put(items.get(i), bags.get(j));
 					ArrayList<Item> itemsCopy = deepCopy(items);
 					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
@@ -25,11 +47,12 @@ public class Backtrack
 					{
 						return true;
 					}
+					bags.get(j).removeItem(items.get(i));
 				}
 				assignment.remove(items.get(i));
+				
 			}
-			items.remove(i);
-			i--;
+			return false;
 		}
 		return false;
 	}

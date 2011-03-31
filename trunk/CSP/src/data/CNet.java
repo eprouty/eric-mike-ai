@@ -7,7 +7,7 @@ import java.util.Iterator;
 import search.AC3;
 
 public class CNet {
-	int lowerLim, upperLim;
+	public int lowerLim, upperLim;
 	//nodes
 	ArrayList<Item> items = new ArrayList<Item>();
 	static //domain
@@ -170,7 +170,9 @@ public class CNet {
 	public boolean checkConsistency(Item item, Bag bag, HashMap<Item, Bag> assignments){
 		boolean valid = true;
 		if (item.checkValidBag(bag)){
-			if (bag.getRemainingSize() - item.weight >= 0){
+			
+			if (bag.getRemainingSize() >= item.weight){
+				//System.out.println("Bag "+bag.name+" has "+bag.getRemainingSize()+" size left, which means item "+item.name+" of size "+item.weight+" fits.");
 				if (bag.getNumberOfItems() + 1 <= upperLim){
 					Iterator<Item> ii = assignments.keySet().iterator();
 					while (ii.hasNext()){

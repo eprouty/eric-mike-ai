@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -13,11 +14,11 @@ import search.Backtrack;
 public class Main {
 	//this is the entry point for the system, take in the file that will be used for the problem
 	public static void main (String [] args) throws IOException{
-		if (args.length == 0){
-			System.err.println("Please give a text file containing contrainsts for the problem");
-			System.exit(-1);
-		} 
-		FileInputStream fstream = new FileInputStream(args[0]);
+		//if (args.length == 0){
+		//	System.err.println("Please give a text file containing contrainsts for the problem");
+		//	System.exit(-1);
+		//} 
+		FileInputStream fstream = new FileInputStream("constraint10.dat");
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		
@@ -93,17 +94,28 @@ public class Main {
 				}
 			}
 		}
+		if (cnet.upperLim==0) cnet.setLimits(0, 100);
 		cnet.finalizeConstraints();
 		
 		HashMap<Item, Bag> assignments = new HashMap<Item, Bag>();
+		ArrayList<Item> itemOut=new ArrayList<Item>();
+		ArrayList<Bag> bagOut=new ArrayList<Bag>();
+		int i=0;
 		if (Backtrack.backtracking(cnet.getBags(), cnet.items, assignments, cnet)){
 			System.out.println("Hooray we found a solution");
 			for (Item item:assignments.keySet())
 			{
-				System.out.println(item.name+" "+assignments.get(item).name);
+				i=0;
+				while (itemOut.size()>i && itemOut.get(i).name<item.name)i++;
+				itemOut.add(i,item);
+				bagOut.add(i,assignments.get(item));
 			}
 		} else {
 			System.err.println("Boooo! no solution");
+		}
+		for (i=0; i<itemOut.size();i++)
+		{
+			System.out.println(itemOut.get(i).name+" "+bagOut.get(i).name);
 		}
 	}
 }
