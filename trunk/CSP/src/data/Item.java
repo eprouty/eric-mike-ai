@@ -1,9 +1,9 @@
 package data;
 
 public class Item{
-	char name;
-	int weight;
-	char[] validBags;
+	public char name;
+	public int weight;
+	public char[] validBags;
 	
 	public Item(char name, int weight){
 		this.name = name;
