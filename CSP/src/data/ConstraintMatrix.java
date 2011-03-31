@@ -97,4 +97,21 @@ public class ConstraintMatrix{
 		}
 		return valid;
 	}
+	
+	public boolean checkConsistency(char bag1, char bag2){
+		for (int i=1; i < matrix.length; i++){
+			for (int j = 1; j < matrix.length; j++){
+				if (matrix[i][0] == bag1){
+					if (matrix[0][j] == bag2){
+						if (matrix[i][j] == 't'){
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
