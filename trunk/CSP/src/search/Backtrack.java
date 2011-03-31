@@ -40,17 +40,22 @@ public class Backtrack
 				{
 					bags.get(j).addItem(items.get(i));
 					assignment.put(items.get(i), bags.get(j));
+					System.out.println("Assigned " + items.get(i).name + " " + bags.get(j).name);
 					ArrayList<Item> itemsCopy = deepCopy(items);
 					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
 					itemsCopy.remove(i);
 					if (backtracking(bagsCopy,itemsCopy,assignment,net))
 					{
-						return true;
+						if (net.lowerLimMet()){
+							return true;
+						} else {
+							return false;
+						}
 					}
 					bags.get(j).removeItem(items.get(i));
+					System.out.println("Removed " + items.get(i).name + " " + bags.get(j).name);
 				}
 				assignment.remove(items.get(i));
-				
 			}
 			return false;
 		}

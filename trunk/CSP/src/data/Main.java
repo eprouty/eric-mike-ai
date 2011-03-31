@@ -7,18 +7,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
 import search.Backtrack;
 
 public class Main {
 	//this is the entry point for the system, take in the file that will be used for the problem
 	public static void main (String [] args) throws IOException{
-		//if (args.length == 0){
-		//	System.err.println("Please give a text file containing contrainsts for the problem");
-		//	System.exit(-1);
-		//} 
-		FileInputStream fstream = new FileInputStream("constraint10.dat");
+		if (args.length == 0){
+			System.err.println("Please give a text file containing contrainsts for the problem");
+			System.exit(-1);
+		} 
+		FileInputStream fstream = new FileInputStream(args[0]);
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		
@@ -30,8 +28,10 @@ public class Main {
 		int size;
 		String b;
 		char[] bags;
+		//read in the constraint file
 		while ((line = br.readLine()) != null){
 			if (line.contains("#")){
+				//once all of the items and bags have been read in its necessary to intialize all items validBags to contain the full domain
 				if (section == 2){
 					cnet.initializeValidBags();
 				}
@@ -94,6 +94,7 @@ public class Main {
 				}
 			}
 		}
+		//run through and finalize all of the constraints to ensure node and arc consistency
 		if (cnet.upperLim==0) cnet.setLimits(0, 100);
 		cnet.finalizeConstraints();
 		
@@ -101,6 +102,7 @@ public class Main {
 		ArrayList<Item> itemOut=new ArrayList<Item>();
 		ArrayList<Bag> bagOut=new ArrayList<Bag>();
 		int i=0;
+		//backtracking search
 		if (Backtrack.backtracking(cnet.getBags(), cnet.items, assignments, cnet)){
 			System.out.println("Hooray we found a solution");
 			for (Item item:assignments.keySet())

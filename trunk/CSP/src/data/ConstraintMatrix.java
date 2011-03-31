@@ -12,12 +12,21 @@ public class ConstraintMatrix{
 		this.item1 = item1;
 		this.item2 = item2;
 		matrix[0][0] = '0';
+		//initialize the sides to contain the names of the related bags
 		for (int i=1; i < matrix.length; i++){
 			matrix[i][0] = CNet.bags.get(i-1).name;
 			matrix[0][i] = CNet.bags.get(i-1).name;
 			for (int j = 1; j < matrix.length; j++){
 				matrix[i][j] = 't';
 			}
+		}
+	}
+	
+	public char getItem(int num){
+		if (num == 1){
+			return item1;
+		} else {
+			return item2;
 		}
 	}
 	
@@ -57,6 +66,7 @@ public class ConstraintMatrix{
 		}
 	}
 	
+	//go through and ensure that all of the constraints are set based upon the unary as well as binary constraints
 	public void finalizeConstraints(char[] item1ValidBags, char[] item2ValidBags){
 		String v1 = String.valueOf(item1ValidBags);
 		String v2 = String.valueOf(item2ValidBags);
@@ -72,6 +82,7 @@ public class ConstraintMatrix{
 		}
 	}
 	
+	//checks to see if it is possible to put the first or second item in the selected bag
 	public boolean checkValidity(char possibleBag, int itemNum){
 		boolean valid = false;
 		if (itemNum == 1){
@@ -98,6 +109,7 @@ public class ConstraintMatrix{
 		return valid;
 	}
 	
+	//ensure that it is consistent with the constraints to put item1 in bag1 and item2 in bag2
 	public boolean checkConsistency(char bag1, char bag2){
 		for (int i=1; i < matrix.length; i++){
 			for (int j = 1; j < matrix.length; j++){
@@ -113,5 +125,17 @@ public class ConstraintMatrix{
 			}
 		}
 		return false;
+	}
+	
+	public int getMinimum(){
+		int min = 0;
+		for (int i=1; i < matrix.length; i++){
+			for (int j = 1; j < matrix.length; j++){
+				if (matrix[i][j] == 't'){
+					min++;
+				}
+			}
+		}
+		return min;
 	}
 }
