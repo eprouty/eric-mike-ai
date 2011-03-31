@@ -97,6 +97,10 @@ public class Main {
 		HashMap<Item, Bag> assignments = new HashMap<Item, Bag>();
 		if (Backtrack.backtracking(cnet.getBags(), cnet.items, assignments, cnet)){
 			System.out.println("Hooray we found a solution");
+			for (Item item:assignments.keySet())
+			{
+				System.out.println("Item "+item.name+" goes in bag "+assignments.get(item).name);
+			}
 		} else {
 			System.err.println("Boooo! no solution");
 		}

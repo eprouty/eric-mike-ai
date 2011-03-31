@@ -12,9 +12,14 @@ public class Bag{
 		this.size = size;
 	}
 	
-	public void addItem(Item i){
+	public boolean addItem(Item i){
+		if (i.weight>size)
+		{
+			return false;
+		}
 		items.add(i);
 		size = size - i.weight;
+		return true;
 	}
 	
 	public int getRemainingSize(){

@@ -15,10 +15,9 @@ public class Backtrack
 		{
 			for (int j=0; j<items.size(); j++)
 			{
-				if (consistent(bags.get(bags.size()-1), items.get(j), assignment, net))
+				if (consistent(bags.get(i), items.get(j), assignment, net) && bags.get(i).addItem(items.get(j)))
 				{
-					assignment.put(items.get(j), bags.get(bags.size()-1));
-					bags.get(bags.size() - 1).addItem(items.get(j));
+					assignment.put(items.get(j), bags.get(i));
 					ArrayList<Item> itemsCopy = deepCopy(items);
 					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
 					itemsCopy.remove(j);
@@ -29,7 +28,8 @@ public class Backtrack
 				}
 				assignment.remove(items.get(j));
 			}
-			bags.remove(0);
+			bags.remove(i);
+			i--;
 		}
 		return false;
 	}
