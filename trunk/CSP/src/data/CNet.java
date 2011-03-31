@@ -18,6 +18,10 @@ public class CNet {
 	public CNet(){
 	}
 	
+	public ArrayList<Bag> getBags(){
+		return bags;
+	}
+	
 	//sets information about how many items must be in a bag
 	public void setLimits(int lowerLim, int upperLim){
 		this.lowerLim = lowerLim;
@@ -153,6 +157,14 @@ public class CNet {
 			bString += b.name;
 		}
 		return bString;
+	}
+	
+	public void initializeValidBags(){
+		String bagString = getBagString();
+		char[] bags = bagString.toCharArray();
+		for (Item i : items){
+			i.setValidBags(bags);
+		}
 	}
 	
 	public boolean checkConsistency(Item item, Bag bag, HashMap<Item, Bag> assignments){
