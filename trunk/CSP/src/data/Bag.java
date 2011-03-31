@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Bag{
 	public char name;
 	public int size;
-	public ArrayList<Item> items;
+	public ArrayList<Item> items = new ArrayList<Item>();
 	
 	public Bag(char name, int size){
 		this.name = name;
@@ -19,6 +19,10 @@ public class Bag{
 	
 	public int getRemainingSize(){
 		return size;
+	}
+	
+	public void setRemainingSize(int rsize){
+		size = rsize;
 	}
 	
 	public Item[] getItemsInBag(){

@@ -39,6 +39,7 @@ public class Backtrack
 		for(Item item:list)
 		{
 			Item copyItem=new Item(item.name, item.weight);
+			copyItem.setValidBags(item.validBags);
 			copy.add(copyItem);
 		}
 		return copy;
@@ -49,6 +50,7 @@ public class Backtrack
 		for(Bag bag:list)
 		{
 			Bag copyItem=new Bag(bag.name, bag.size);
+			copyItem.setRemainingSize(bag.size);
 			copy.add(copyItem);
 		}
 		return copy;
