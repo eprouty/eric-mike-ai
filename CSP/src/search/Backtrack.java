@@ -46,7 +46,7 @@ public class Backtrack
 				{
 					bags.get(j).addItem(i);
 					assignment.put(i, bags.get(j));
-					System.out.println("Assigned " + i.name + " " + bags.get(j).name);
+					//System.out.println("Assigned " + i.name + " " + bags.get(j).name);
 					ArrayList<Item> itemsCopy = deepCopy(items);
 					//ArrayList<Bag> bagsCopy = deepCopyBag(bags);
 					itemsCopy.remove(i);
@@ -59,7 +59,7 @@ public class Backtrack
 						}
 					}
 					bags.get(j).removeItem(i);
-					System.out.println("Removed " + i.name + " " + bags.get(j).name);
+					//System.out.println("Removed " + i.name + " " + bags.get(j).name);
 				}
 				assignment.remove(i);
 			}
