@@ -35,6 +35,15 @@ public class CNet {
 		return null;
 	}
 	
+	public Bag getBag(char name){
+		for (Bag b : bags){
+			if (b.name == name){
+				return b;
+			}
+		}
+		return null;
+	}
+	
 	//sets information about how many items must be in a bag
 	public void setLimits(int lowerLim, int upperLim){
 		this.lowerLim = lowerLim;

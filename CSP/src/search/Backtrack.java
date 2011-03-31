@@ -3,6 +3,8 @@ package search;
 import data.CNet;
 import data.Bag;
 import data.Item;
+import heuristics.MRV;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,23 +32,25 @@ public class Backtrack
 			}
 			return true;
 		}
-		for (int i=0; i<items.size(); i++)
+		Item i = null;
+		while ((i = MRV.getNextItem(net, items)) != null)
 		{
+			bags = i.getBags(net);
 			sortByLCV(bags,net);
 			for (int j=0; j<bags.size(); j++)
 			{
 				
-				boolean consistency=consistent(bags.get(j), items.get(i), assignment, net);
+				boolean consistency=consistent(bags.get(j), i, assignment, net);
 				//boolean weightCheck=bags.get(j).addItem(items.get(i));
 				if (consistency)
 				{
-					bags.get(j).addItem(items.get(i));
-					assignment.put(items.get(i), bags.get(j));
-					System.out.println("Assigned " + items.get(i).name + " " + bags.get(j).name);
+					bags.get(j).addItem(i);
+					assignment.put(i, bags.get(j));
+					System.out.println("Assigned " + i.name + " " + bags.get(j).name);
 					ArrayList<Item> itemsCopy = deepCopy(items);
-					ArrayList<Bag> bagsCopy = deepCopyBag(bags);
+					//ArrayList<Bag> bagsCopy = deepCopyBag(bags);
 					itemsCopy.remove(i);
-					if (backtracking(bagsCopy,itemsCopy,assignment,net))
+					if (backtracking(bags,itemsCopy,assignment,net))
 					{
 						if (net.lowerLimMet()){
 							return true;
@@ -54,10 +58,10 @@ public class Backtrack
 							return false;
 						}
 					}
-					bags.get(j).removeItem(items.get(i));
-					System.out.println("Removed " + items.get(i).name + " " + bags.get(j).name);
+					bags.get(j).removeItem(i);
+					System.out.println("Removed " + i.name + " " + bags.get(j).name);
 				}
-				assignment.remove(items.get(i));
+				assignment.remove(i);
 			}
 			return false;
 		}

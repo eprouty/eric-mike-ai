@@ -1,5 +1,7 @@
 package data;
 
+import java.util.ArrayList;
+
 public class Item{
 	public char name;
 	public int weight;
@@ -21,6 +23,14 @@ public class Item{
 		} else {
 			return validBags;
 		}
+	}
+	
+	public ArrayList<Bag> getBags(CNet cnet){
+		ArrayList<Bag> bags = new ArrayList<Bag>();
+		for (char c : validBags){
+			bags.add(cnet.getBag(c));
+		}
+		return bags;
 	}
 	
 	public boolean checkValidBag(Bag b){
